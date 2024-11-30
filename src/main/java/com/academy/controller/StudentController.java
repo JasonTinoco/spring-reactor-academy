@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Comparator;
 
 @RestController
 @RequestMapping("/students")
@@ -101,6 +102,21 @@ public class StudentController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(e))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/sort-age")
+    public Mono<ResponseEntity<Flux<StudentDTO>>> findAllSortAge(
+            @RequestParam(name = "order", defaultValue = "asc") String order) {
+
+        Flux<StudentDTO> fx =  service.findAll()
+                .map(this::convertToDto)
+                .sort(order.equalsIgnoreCase("desc") ? Comparator.comparing(StudentDTO::getAge).reversed() :
+                        Comparator.comparing(StudentDTO::getAge));
+
+        return Mono.just(ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(fx)
+        ).defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     private StudentDTO convertToDto(Student model) {
