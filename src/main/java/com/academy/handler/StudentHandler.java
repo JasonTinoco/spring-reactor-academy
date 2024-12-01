@@ -3,6 +3,7 @@ package com.academy.handler;
 import com.academy.dto.StudentDTO;
 import com.academy.model.Student;
 import com.academy.service.IStudentService;
+import com.academy.validator.RequestValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class StudentHandler {
 
     private final IStudentService service;
     private final ModelMapper modelMapper;
+    private final RequestValidator requestValidator;
 
     public Mono<ServerResponse> findAll(ServerRequest request) {
         return ServerResponse
@@ -45,6 +47,7 @@ public class StudentHandler {
         Mono<StudentDTO> monoClientDTO = request.bodyToMono(StudentDTO.class);
 
         return monoClientDTO
+                .flatMap(requestValidator::validate)
                 .flatMap(e -> service.save(convertToDocument(e)))
                 .map(this::convertToDto)
                 .flatMap(e -> ServerResponse
@@ -62,6 +65,7 @@ public class StudentHandler {
                     e.setId(id);
                     return e;
                 })
+                .flatMap(requestValidator::validate)
                 .flatMap(e -> service.update(id, convertToDocument(e)))
                 .map(this::convertToDto)
                 .flatMap(e -> ServerResponse
