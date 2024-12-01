@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.academy</groupId>
 	<artifactId>spring-reactor-academy</artifactId>
-	<version>0.7.0-SNAPSHOT</version>
+	<version>0.8.0-SNAPSHOT</version>
 	<name>spring-reactor-academy</name>
 	<description>Reactive Project - Acedemy</description>
 
