@@ -1,6 +1,7 @@
 package com.academy.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,12 @@ import java.util.List;
 public class EnrollmentDTO {
 
     private String id;
+    @NotNull
     private LocalDate dateEnrollment;
+    @NotNull
     private StudentDTO student;
+    @NotNull
     private List<EnrollmentDetailDTO> courses;
+    @NotNull
     private Boolean state;
 }

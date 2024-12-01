@@ -4,6 +4,7 @@ import com.academy.dto.EnrollmentDTO;
 import com.academy.model.Enrollment;
 import com.academy.pagination.PageSupport;
 import com.academy.service.IEnrollmentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +54,7 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<EnrollmentDTO>> save(@RequestBody EnrollmentDTO dto, final ServerHttpRequest req) {
+    public Mono<ResponseEntity<EnrollmentDTO>> save(@Valid @RequestBody EnrollmentDTO dto, final ServerHttpRequest req) {
         return service.save(convertToDocument(dto))
                 .map(this::convertToDto)
                 .map(e -> ResponseEntity.created(
@@ -65,7 +66,7 @@ public class EnrollmentController {
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<EnrollmentDTO>> update(@PathVariable("id") String id, @RequestBody EnrollmentDTO dto) {
+    public Mono<ResponseEntity<EnrollmentDTO>> update(@Valid @PathVariable("id") String id, @RequestBody EnrollmentDTO dto) {
         return Mono.just(dto)
                 .map(e -> {
                     e.setId(id);

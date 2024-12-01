@@ -4,6 +4,7 @@ import com.academy.dto.CourseDTO;
 import com.academy.model.Course;
 import com.academy.pagination.PageSupport;
 import com.academy.service.ICourseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -53,7 +54,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<CourseDTO>> save(@RequestBody CourseDTO dto, final ServerHttpRequest req) {
+    public Mono<ResponseEntity<CourseDTO>> save(@Valid @RequestBody CourseDTO dto, final ServerHttpRequest req) {
         return service.save(convertToDocument(dto))
                 .map(this::convertToDto)
                 .map(e -> ResponseEntity.created(
@@ -65,7 +66,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<CourseDTO>> update(@PathVariable("id") String id, @RequestBody CourseDTO dto) {
+    public Mono<ResponseEntity<CourseDTO>> update(@Valid @PathVariable("id") String id, @RequestBody CourseDTO dto) {
         return Mono.just(dto)
                 .map(e -> {
                     e.setId(id);
