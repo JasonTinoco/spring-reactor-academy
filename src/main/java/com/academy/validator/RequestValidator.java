@@ -1,6 +1,5 @@
 package com.academy.validator;
 
-import com.academy.dto.ValidationDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
